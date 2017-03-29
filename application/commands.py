@@ -18,16 +18,17 @@ def newUser(username,password):
 
 # Modification du mot de passe
 @manager.command
-def changepass(username,oldpassword,newpassword):
-    from .models import User
-    from hashlib import sha256
-    old = sha256()
-    old.update(oldpassword.encode())
-    u = User.query.get(username)
-    if old.hexdigest()==u.password:
-        new = sha256()
-        new.update(newpassword.encode())
-        u.password = new.hexdigest()
-        db.session.commit()
-    else:
-        print("Votre ancien mot de passe est incorrect")
+def changePass(username,oldpassword,newpassword):
+	from .models import User
+	from hashlib import sha256
+	old = sha256()
+	old.update(oldpassword.encode())
+	u = User.query.get(username)
+	if old.hexdigest()==u.password:
+		new = sha256()
+		new.update(newpassword.encode())
+		u.password = new.hexdigest()
+		db.session.commit()
+		print("Votre mot de passe est bien modifié")
+	else:
+		print("Votre ancien mot de passe est incorrect")
