@@ -1,0 +1,36 @@
+{%  extends "base.html" %}
+
+{% block main %}
+
+<article class="">
+  <header>
+      <h2>{{pagetitle}}</h2>
+
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+  </header>
+  <section>
+    {% for artist in l_artists %}
+      <table>
+        <tr>
+          <th>Album</th>
+          <th>Genres</th>
+        </tr>
+        {% for album in artist.albums %}
+        <tr>
+          <th>{{ album.nom_album }}</th>
+          <th>{% for genre in album.genres %}{{ genre.nom_genre }}, {% endfor %}</th>
+        </tr>
+        {% endfor %}
+      </table>
+    {% endfor %}
+  </section>
+  <footer>
+    <p>
+      Maecenas a ante auctor, elementum justo vel, ullamcorper orci. Cras aliquam nec tortor ut placerat. Sed eu vehicula lorem.
+    </p>
+  </footer>
+</article>
+
+{% endblock %}
