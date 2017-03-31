@@ -39,3 +39,10 @@ class Avoir_genre(db.Model):
 	nom_genre = db.Column(db.String(100),db.ForeignKey("genre.nom_genre"))
 	id_album = db.relationship("Album",backref=db.backref("genres",lazy="dynamic"))
 	nom_genre = db.relationship("Genre",backref=db.backref("albums",lazy="dynamic"))
+
+
+def get_artistes():
+    return Artiste.query.all()
+
+def get_albums():
+    return Album.query.all()

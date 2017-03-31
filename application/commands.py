@@ -32,3 +32,45 @@ def changePass(username,oldpassword,newpassword):
 		print("Votre mot de passe est bien modifié")
 	else:
 		print("Votre ancien mot de passe est incorrect")
+
+
+@manager.command
+def loaddb(filename):
+    # création de toutes les tables
+    db.create_all()
+
+    import yaml
+    albums = yaml.load(open(filename))
+
+    # import des modèles
+    from .models import Artiste,Album,Avoir_genre,Genre
+
+    #Création des artistes
+    artistes = {}
+    for album in albums:
+        artiste = album["by"]
+        if artiste not in artistes:
+            o = Artiste(nom_artiste=artiste)
+            db.session.add(o)
+            artistes[a] = o
+    db.session.commit()
+
+	# #Création des Genres
+    # genres = {}
+    # for album in albums:
+    #     artiste = album["by"]
+    #     if artiste not in artistes:
+    #         o = Artiste(nom_artiste=artiste)
+    #         db.session.add(o)
+    #         artistes[a] = o
+    # db.session.commit()
+
+    # création de tous les albums
+    for album in albums:
+        artiste = artistes[album["by"]]
+        o = Book(titre_album = b["title"],
+                 annee_album = b["releaseYear"],
+                 img_album   = b["img"],
+                 id_artiste   = b["by"])
+        db.session.add(o)
+    db.session.commit()
