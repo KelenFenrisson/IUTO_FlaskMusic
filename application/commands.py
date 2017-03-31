@@ -50,27 +50,37 @@ def loaddb(filename):
     for album in albums:
         artiste = album["by"]
         if artiste not in artistes:
-            o = Artiste(nom_artiste=artiste)
-            db.session.add(o)
-            artistes[a] = o
+            art = Artiste(nom_artiste=artiste)
+            db.session.add(art)
+            artistes[a] = art
     db.session.commit()
 
-	# #Création des Genres
-    # genres = {}
-    # for album in albums:
-    #     artiste = album["by"]
-    #     if artiste not in artistes:
-    #         o = Artiste(nom_artiste=artiste)
-    #         db.session.add(o)
-    #         artistes[a] = o
-    # db.session.commit()
+	#Création des Genres
+    genres = {}
+    for album in albums:
+        genre = album["genre"]
+		for elem in genre:
+	        if genre not in genres:
+	            gen = Genre(nom_genre=genre)
+	            db.session.add(gen)
+	            genres[a] = gen
+    db.session.commit()
 
     # création de tous les albums
     for album in albums:
         artiste = artistes[album["by"]]
-        o = Book(titre_album = b["title"],
-                 annee_album = b["releaseYear"],
-                 img_album   = b["img"],
-                 id_artiste   = b["by"])
+        o = Book(id_album = album["entryId"],
+				 titre_album = album["title"],
+                 annee_album = album["releaseYear"],
+                 img_album   = album["img"],
+                 id_artiste   = album["by"])
         db.session.add(o)
     db.session.commit()
+
+	#Création des Avoir_genre
+	for album in albums:
+		avoirGenre = album["genre"]
+		for elem in avoirGenre:
+			avoir = Avoir_genre(id_album=album["entryId"],nom_genre=elem)
+			db.session.add(avoir)
+	db.session.commit()

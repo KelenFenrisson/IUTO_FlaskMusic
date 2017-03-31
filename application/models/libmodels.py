@@ -46,3 +46,6 @@ def get_artistes():
 
 def get_albums():
     return Album.query.all()
+
+def get_genres():
+	return Genre.query.all()
