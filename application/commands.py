@@ -36,51 +36,51 @@ def changePass(username,oldpassword,newpassword):
 
 @manager.command
 def loaddb(filename):
-    # création de toutes les tables
-    db.create_all()
+	# création de toutes les tables
+	db.create_all()
 
-    import yaml
-    albums = yaml.load(open(filename))
+	import yaml
+	albums = yaml.load(open(filename))
 
-    # import des modèles
-    from .models import Artiste,Album,Avoir_genre,Genre
+	# import des modèles
+	from .models import User,Album,Artiste,Genre,get_artistes,get_albums,get_genres,Album_Genre
 
-    #Création des artistes
-    artistes = {}
-    for album in albums:
-        artiste = album["by"]
-        if artiste not in artistes:
-            art = Artiste(nom_artiste=artiste)
-            db.session.add(art)
-            artistes[a] = art
-    db.session.commit()
-
-	#Création des Genres
-    genres = {}
-    for album in albums:
-        genre = album["genre"]
-		for elem in genre:
-	        if genre not in genres:
-	            gen = Genre(nom_genre=genre)
-	            db.session.add(gen)
-	            genres[a] = gen
-    db.session.commit()
-
-    # création de tous les albums
-    for album in albums:
-        artiste = artistes[album["by"]]
-        o = Book(id_album = album["entryId"],
-				 titre_album = album["title"],
-                 annee_album = album["releaseYear"],
-                 img_album   = album["img"],
-                 id_artiste   = album["by"])
-        db.session.add(o)
-    db.session.commit()
-
-	#Création des Avoir_genre
+	artistes=set()
+	genres=set()
+	artiste = None
+	genre = None
 	for album in albums:
-		avoirGenre = album["genre"]
-		for elem in avoirGenre:
-			avoir = Avoir_genre(id_album=album["entryId"],nom_genre=elem)
-			db.session.add(avoir)
-	db.session.commit()
+
+		#Création des artistes
+		nom_artiste = album["by"]
+		artiste = Artiste(nom_artiste=nom_artiste)
+		if nom_artiste not in artistes:
+			db.session.add(artiste)
+			db.session.commit()
+			artistes.add(nom_artiste)
+
+
+		# création de tous les albums
+		o = Album(id_album = album["entryId"],
+		titre_album = album["title"],
+		annee_album = album["releaseYear"],
+		img_album   = album["img"],
+		id_artiste   = album["by"])
+		db.session.add(o)
+		db.session.commit()
+
+
+		#Création des Genres
+		nom_genre = album["genre"]
+		id_album= album["entryId"]
+
+		for elem in nom_genre:
+			elem = elem.capitalize()
+			genre = Genre(nom_genre=elem)
+			if elem not in genres:
+				db.session.add(genre)
+				db.session.commit()
+				genres.add(elem)
+			album_genre = Album_Genre(id_album = id_album , nom_genre = elem)
+			db.session.add(album_genre)
+			db.session.commit()

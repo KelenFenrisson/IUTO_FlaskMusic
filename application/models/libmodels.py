@@ -9,6 +9,18 @@ class User(db.Model,UserMixin):
     def get_id(self):
         return self.username
 
+# album_genres = db.Table('album_genres',
+#     db.Column('nom_genre', db.Integer, db.ForeignKey('genre.nom_genre')),
+#     db.Column('album_id', db.Integer, db.ForeignKey('album.id_album'))
+# )
+
+class Album_Genre(db.Model):
+	id_album_genre = db.Column(db.Integer,primary_key=True)
+	id_album = db.Column(db.Integer,db.ForeignKey("album.id_album"))
+	nom_genre = db.Column(db.String,db.ForeignKey("genre.nom_genre"))
+	album=db.relationship("Album",backref=db.backref("album_genre",lazy="dynamic"))
+	genre=db.relationship("Genre",backref=db.backref("album_genre",lazy="dynamic"))
+
 class Album(db.Model):
 	id_album = db.Column(db.Integer,primary_key=True)
 	titre_album = db.Column(db.String(50))
@@ -33,14 +45,6 @@ class Genre(db.Model):
 	def __repr__(self):
 		return "<Genre %s >" %(self.nom_genre)
 
-class Avoir_genre(db.Model):
-	id_genre = db.Column(db.Integer, primary_key=True)
-	id_album = db.Column(db.Integer,db.ForeignKey("album.id_album"))
-	nom_genre = db.Column(db.String(100),db.ForeignKey("genre.nom_genre"))
-	id_album = db.relationship("Album",backref=db.backref("genres",lazy="dynamic"))
-	nom_genre = db.relationship("Genre",backref=db.backref("albums",lazy="dynamic"))
-
-
 def get_artistes():
     return Artiste.query.all()
 
@@ -49,3 +53,6 @@ def get_albums():
 
 def get_genres():
 	return Genre.query.all()
+
+def get_genres_by_album(id_al):
+	return Avoir_genre.query.filter_by(id_album=id_al).all()
