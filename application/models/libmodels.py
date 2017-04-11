@@ -6,7 +6,7 @@ from flask_login import UserMixin
 @login_manager.user_loader
 def load_user(username):
     return User.query.get(username)
-    
+
 class User(db.Model,UserMixin):
     username = db.Column(db.String(50), primary_key=True)
     password = db.Column(db.String(64))
@@ -50,6 +50,16 @@ def get_artistes():
 
 def get_albums():
     return Album.query.all()
+
+def get_albums_par_artiste(id_artiste):
+    return Album.query.filter_by(id_artiste=id_artiste).all()
+
+def get_albums_par_genre(nom_genre):
+    genre = Genre.query.filter_by(nom_genre=nom_genre).first()
+    albums=[]
+    for al_ge in genre.album_genre:
+        albums.append(Album.query.get(al_ge.id_album))
+    return albums
 
 def get_genres():
 	return Genre.query.all()

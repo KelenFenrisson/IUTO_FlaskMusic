@@ -1,6 +1,6 @@
 from .app import app,db
 from flask import render_template,url_for,redirect,request
-from .models import User,Album,Artiste,Genre,get_artistes,get_albums,get_genres,Album_Genre
+from .models import User,Album,Artiste,Genre,get_artistes,get_albums,get_genres,Album_Genre,get_albums_par_artiste,get_albums_par_genre
 from flask_login import login_user, current_user, logout_user,login_required
 from .form import LoginForm
 
@@ -61,6 +61,16 @@ def logout():
 @app.route("/album/list")
 def album_list():
 	return render_template("album-list.html",title=SITENAME,pagetitle="Liste des albums", l_albums=get_albums())
+
+@app.route("/album/by/artist <string:artist_id>")
+def album_list_by_artist(artist_id):
+	a=Artiste.query.get(artist_id)
+	return render_template("album-list.html",title=SITENAME,pagetitle="Liste des albums de {0}".format(a.nom_artiste), l_albums=get_albums_par_artiste(a.id_artiste))
+
+@app.route("/album/by/genre <string:genre>")
+def album_list_by_genre(genre):
+	return render_template("album-list.html",title=SITENAME,pagetitle="Liste des albums", l_albums=get_albums_par_genre(genre))
+
 
 # ########################### GENRES ############################################
 #
