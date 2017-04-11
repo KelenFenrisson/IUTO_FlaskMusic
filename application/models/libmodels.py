@@ -22,15 +22,15 @@ class Album_Genre(db.Model):
 	genre=db.relationship("Genre",backref=db.backref("album_genre",lazy="dynamic"))
 
 class Album(db.Model):
-	id_album = db.Column(db.Integer,primary_key=True)
-	titre_album = db.Column(db.String(50))
-	annee_album = db.Column(db.Integer)
-	img_album = db.Column(db.String(100))
-	id_artiste = db.Column(db.Integer,db.ForeignKey("artiste.id_artiste"))
-	artiste = db.relationship("Artiste",backref=db.backref("albums",lazy="dynamic"))
+    id_album = db.Column(db.Integer,primary_key=True)
+    titre_album = db.Column(db.String(50))
+    annee_album = db.Column(db.Integer)
+    img_album = db.Column(db.String(100))
+    id_artiste = db.Column(db.Integer,db.ForeignKey("artiste.id_artiste"))
+    artiste = db.relationship("Artiste",backref=db.backref("albums",lazy="dynamic"))
 
-	def __repr__(self):
-		return "<Album (%d) %s>" %(self.id_album, self.titre_album)
+    def __repr__(self):
+        return "<Album (%d) %s>" %(self.id_album, self.titre_album)
 
 class Artiste(db.Model):
 	id_artiste = db.Column(db.Integer, primary_key=True)

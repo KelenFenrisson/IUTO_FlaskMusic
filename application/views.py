@@ -8,7 +8,7 @@ SITENAME="FL45K-MU51C"
 def home():
 	return render_template("home.html",title=SITENAME, pagetitle="Accueil")
 
-########################### ARTISTES ##########################################
+########################### ARTISTES ###########################################
 @app.route("/artist/list <string:msg>")
 def artist_list(msg):
 	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes" ,message=msg , l_artists=get_artistes())
@@ -30,13 +30,12 @@ def artist_save():
 def artist_delete():
 	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes" ,msg="" , l_artists=[])
 
-# ########################### ALBUMS ############################################
+############################# ALBUMS ###########################################
 @app.route("/album/list")
 def album_list():
 	return render_template("album-list.html",title=SITENAME,pagetitle="Liste des albums", l_albums=get_albums())
 
-# ########################### GENRES ############################################
-#
-# @app.route("/genre/list")
-# def artist_list():
-# 	return render_template("artist-list.html",title=SITENAME,pagetitle="Liste des genres", l_artists=[])
+############################# GENRES ###########################################
+@app.route("/genre/list")
+def genre_list():
+	return render_template("genre-list.html",title=SITENAME,pagetitle="Liste des genres", l_genres=get_genres())
