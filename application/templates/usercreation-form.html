@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block main %}
-<form class="form-horizontal" role="form" method="POST" action="{{ url_for('adduser') }}">
+<form class="form-horizontal" role="form" method="POST" action="{{ url_for('create_account') }}">
   {{ form.hidden_tag() }}
 
   <div class="form-group">
@@ -32,10 +32,21 @@
   </div>
 
   <div class="form-group">
-    <div class="col-sm-offeset-2 col-sm-10">
+    <label for="pwconfirmation" class="col-sm-5 control-label">
+      {{ form.spambox.label }}
+    </label>
+    <div class="col-sm-1 col-sm-10">
+      {{ form.spambox(class_="form-control", disabled=True) }}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-default"> Sign in </button>
     </div>
   </div>
-  <p>Vous n'avez pas encore de compte ? <a href="url_for('create_account')">Inscrivez vous !</a></p>
+
+
+
 </form>
 {% endblock %}

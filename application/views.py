@@ -2,7 +2,7 @@ from .app import app,db
 from flask import render_template,url_for,redirect,request
 from .models import User,Album,Artiste,Genre,get_artistes,get_albums,get_genres,Album_Genre,get_albums_par_artiste,get_albums_par_genre
 from flask_login import login_user, current_user, logout_user,login_required
-from .form import LoginForm
+from .form import LoginForm, NewUserForm
 
 SITENAME="FL45K-MU51C"
 
@@ -39,7 +39,7 @@ def artist_delete():
 
 ########################### AUTHENTIFICATION ##########################################
 
-@app.route("/login/", methods=("GET","POST",))
+@app.route("/login/", methods=("GET", "POST",))
 def login():
 	f=LoginForm()
 	if not f.is_submitted():
@@ -52,12 +52,32 @@ def login():
 			return redirect(next)
 	return render_template("login.html",form=f)
 
+
 @app.route("/logout/")
 def logout():
 	logout_user()
 	return redirect(url_for('home'))
 
-# ########################### ALBUMS ############################################
+# ########################### NEW USER #########################################
+@app.route("/user/new/", methods=("GET", "POST",))
+def create_account():
+	f=NewUserForm()
+	if not f.is_submitted():
+		f.next.data = request.args.get("next")
+	elif f.validate_on_submit():
+		from hashlib import sha256
+		m = sha256()
+		m.update(f.password.data.encode())
+		user = User(username=f.username.data, password=m.hexdigest())
+		if user:
+			db.session.add(user)
+			db.session.commit()
+			login_user(user)
+			next = f.next.data or url_for("home")
+			return redirect(next)
+	return render_template("usercreation-form.html",form=f)
+
+# ########################### ALBUMS ###########################################
 @app.route("/album/list")
 def album_list():
 	return render_template("album-list.html",title=SITENAME,pagetitle="Liste des albums", l_albums=get_albums())

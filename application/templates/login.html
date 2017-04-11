@@ -27,6 +27,6 @@
       <button type="submit" class="btn btn-default"> Sign in </button>
     </div>
   </div>
-  <p>Vous n'avez pas encore de compte ? <a href="url_for('create_account')">Inscrivez vous !</a></p>
+  <p>Vous n'avez pas encore de compte ? <a href="{{ url_for('create_account') }}">Inscrivez vous !</a></p>
 </form>
 {% endblock %}
