@@ -57,14 +57,15 @@
               </ul>
             </li>
             <li>
+              {% if current_user.is_authenticated %}
               <ul class="nav navbar-nav navbar-rigth.">
-                {% if current_user.is_authenticated %}
                   <li><a>{{current_user.username}}</a></li>
                   <li><a href="{{ url_for('logout') }}"> <span class="glyphicon glyphicon-log-out" title="Logout"></span></a></li>
+              </ul>
                 {% else %}
                   <a href="{{ url_for('login') }}">Se connecter</a>
                 {% endif%}
-              </ul>
+
             </li>
         </div><!--/.nav-collapse -->
       </div>
