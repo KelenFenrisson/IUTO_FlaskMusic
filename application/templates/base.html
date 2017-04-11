@@ -37,7 +37,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Artistes <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Rechercher</a></li>
+                <li><a href="{{ url_for('artist_list') }}">Rechercher</a></li>
                 <li><a href="#">Ajouter</a></li>
                 <li><a href="#">Modifier</a></li>
                 <li role="separator" class="divider"></li>
@@ -56,8 +56,16 @@
                 <li><a href="#">Supprimer</a></li>
               </ul>
             </li>
-            <li><a href="#">Se connecter</a></li>
-          </ul>
+            <li>
+              <ul class="nav navbar-nav navbar-rigth.">
+                {% if current_user.is_authenticated %}
+                  <li><a>{{current_user.username}}</a></li>
+                  <li><a href="{{ url_for('logout') }}"> <span class="glyphicon glyphicon-log-out" title="Logout"></span></a></li>
+                {% else %}
+                  <a href="{{ url_for('login') }}">Se connecter</a>
+                {% endif%}
+              </ul>
+            </li>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
