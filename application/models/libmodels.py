@@ -1,18 +1,18 @@
 import yaml,os.path
-from application import db
+from application import db,login_manager
 from flask_login import UserMixin
 
+
+@login_manager.user_loader
+def load_user(username):
+    return User.query.get(username)
+    
 class User(db.Model,UserMixin):
     username = db.Column(db.String(50), primary_key=True)
     password = db.Column(db.String(64))
 
     def get_id(self):
         return self.username
-
-# album_genres = db.Table('album_genres',
-#     db.Column('nom_genre', db.Integer, db.ForeignKey('genre.nom_genre')),
-#     db.Column('album_id', db.Integer, db.ForeignKey('album.id_album'))
-# )
 
 class Album_Genre(db.Model):
 	id_album_genre = db.Column(db.Integer,primary_key=True)
