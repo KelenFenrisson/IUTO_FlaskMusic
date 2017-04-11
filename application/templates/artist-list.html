@@ -21,7 +21,7 @@
         {% for album in artist.albums %}
         <tr>
           <th>{{ album.titre_album }}</th>
-          <th>{% for genre in album.genres %}{{ genre.nom_genre }}, {% endfor %}</th>
+          <th>{% for genre in album.album_genre %}{{ genre.nom_genre }}, {% endfor %}</th>
         </tr>
         {% endfor %}
       </table>

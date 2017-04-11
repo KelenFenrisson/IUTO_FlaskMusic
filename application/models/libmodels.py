@@ -53,6 +53,3 @@ def get_albums():
 
 def get_genres():
 	return Genre.query.all()
-
-def get_genres_by_album(id_al):
-	return Avoir_genre.query.filter_by(id_album=id_al).all()
