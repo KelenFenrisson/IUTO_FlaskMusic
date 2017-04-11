@@ -30,14 +30,14 @@ class Album(db.Model):
 	artiste = db.relationship("Artiste",backref=db.backref("albums",lazy="dynamic"))
 
 	def __repr__(self):
-		return "<Album (%d) %s>" %(self.id, self.title_album)
+		return "<Album (%d) %s>" %(self.id_album, self.titre_album)
 
 class Artiste(db.Model):
 	id_artiste = db.Column(db.Integer, primary_key=True)
 	nom_artiste = db.Column(db.String(100))
 
 	def __repr__(self):
-		return "<Artiste (%d) %s>" %(self.id, self.name)
+		return "<Artiste (%d) %s>" %(self.id_artiste, self.nom_artiste)
 
 class Genre(db.Model):
 	nom_genre = db.Column(db.String(100), primary_key=True)

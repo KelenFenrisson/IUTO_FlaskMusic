@@ -1,0 +1,30 @@
+{%  extends "base.html" %}
+
+{% block main %}
+
+<article class="">
+  <header>
+      <h2>{{pagetitle}}</h2>
+
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+  </header>
+  <section>
+    {% for album in l_albums %}
+
+      <img src="{{ url_for('static', filename='img/'+ album.img_album if album.img_album) }}" alt="Image de l'album {{ album.titre_album }}">
+      <h3>{{ album.titre_album }}</h3>
+      <h4>Par {{ album.artiste.nom_artiste }}</h4>
+      <p>Genres : {% for genre in album.album_genre %} {{ genre.nom_genre }}, {% endfor %}</p>
+
+    {% endfor %}
+  </section>
+  <footer>
+    <p>
+      Maecenas a ante auctor, elementum justo vel, ullamcorper orci. Cras aliquam nec tortor ut placerat. Sed eu vehicula lorem.
+    </p>
+  </footer>
+</article>
+
+{% endblock %}

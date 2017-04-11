@@ -31,10 +31,10 @@ def artist_delete():
 	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes" ,msg="" , l_artists=[])
 
 # ########################### ALBUMS ############################################
-# @app.route("/album/list")
-# def artist_list():
-# 	return render_template("artist-list.html",title=SITENAME,pagetitle="Liste des albums", l_artists=[])
-#
+@app.route("/album/list")
+def album_list():
+	return render_template("album-list.html",title=SITENAME,pagetitle="Liste des albums", l_albums=get_albums())
+
 # ########################### GENRES ############################################
 #
 # @app.route("/genre/list")
