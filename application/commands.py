@@ -65,7 +65,7 @@ def loaddb(filename):
 		titre_album = album["title"],
 		annee_album = album["releaseYear"],
 		img_album   = album["img"],
-		id_artiste   = album["by"])
+		id_artiste   = artiste.id_artiste)
 		db.session.add(o)
 		db.session.commit()
 

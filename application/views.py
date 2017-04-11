@@ -1,5 +1,6 @@
 from .app import app,db
 from flask import render_template,url_for,redirect,request
+from .models import User,Album,Artiste,Genre,get_artistes,get_albums,get_genres,Album_Genre
 
 SITENAME="FL45K-MU51C"
 
@@ -10,7 +11,7 @@ def home():
 ########################### ARTISTES ##########################################
 @app.route("/artist/list <string:msg>")
 def artist_list(msg):
-	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes" ,message=msg , l_artists=[])
+	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes" ,message=msg , l_artists=get_artistes())
 
 @app.route("/artist/add")
 def artist_add():

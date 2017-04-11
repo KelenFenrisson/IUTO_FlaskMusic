@@ -12,6 +12,7 @@
   </header>
   <section>
     {% for artist in l_artists %}
+    <h2>{{ artist.nom_artiste }}</h2>
       <table>
         <tr>
           <th>Album</th>
@@ -19,7 +20,7 @@
         </tr>
         {% for album in artist.albums %}
         <tr>
-          <th>{{ album.nom_album }}</th>
+          <th>{{ album.titre_album }}</th>
           <th>{% for genre in album.genres %}{{ genre.nom_genre }}, {% endfor %}</th>
         </tr>
         {% endfor %}
