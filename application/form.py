@@ -16,3 +16,10 @@ class LoginForm(FlaskForm):
     	m.update(self.password.data.encode())
     	passwd = m.hexdigest()
     	return user if passwd == user.password else None
+
+
+class NewUserForm(FlaskForm):
+    username = StringField("Nom d'utilisateur",validators=[DataRequired(), message="Vous devez entrer un nom d'utilisateur"])
+    password = PasswordField("Mot de passe", validators=[DataRequired(), EqualTo('pwconfirmation', message='Votre mot de passe ne correspond pas à la confirmation')])
+    pwconfirmation = PasswordField("Confirmation du mot de passe", validators=[DataRequired(), EqualTo('pwconfirmation', message='La confirmation ne correspond pas à votre mot de passe')])
+    next = HiddenField()
