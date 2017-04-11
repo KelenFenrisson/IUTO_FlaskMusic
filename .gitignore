@@ -2,3 +2,4 @@ application/__pycache__
 application/models/__pycache__
 application/models/*.db
 application/static/img
+application/static/extrait.yml
