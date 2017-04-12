@@ -9,7 +9,7 @@
       {{ form.username.label }}
     </label>
     <div class="col-sm-10">
-      {{form.username(size=50, class_="form-control",placeholder="Username")}}
+      {{form.username(size=50, class_="form-control",placeholder="Username", required=form.username.flags.required)}}
     </div>
   </div>
 
@@ -18,7 +18,7 @@
       {{ form.password.label }}
     </label>
     <div class="col-sm-10">
-      {{ form.password(size=50,class_="form-control",placeholder="Password") }}
+      {{ form.password(size=50,class_="form-control",placeholder="Password", required=form.password.flags.required) }}
     </div>
   </div>
 
@@ -27,7 +27,7 @@
       {{ form.pwconfirmation.label }}
     </label>
     <div class="col-sm-10">
-      {{ form.pwconfirmation(size=50,class_="form-control",placeholder="Password Confirmation") }}
+      {{ form.pwconfirmation(size=50,class_="form-control",placeholder="Password Confirmation", required=form.pwconfirmation.flags.required) }}
     </div>
   </div>
 
