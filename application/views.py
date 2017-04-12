@@ -1,47 +1,56 @@
-from .app import app,db
-from flask import render_template,url_for,redirect,request
-from .models import User,Album,Artiste,Genre,get_artistes,get_albums,get_genres,Album_Genre,get_albums_par_artiste,get_albums_par_genre
-from flask_login import login_user, current_user, logout_user,login_required
-from .form import LoginForm, NewUserForm
+from flask import render_template, url_for, redirect, request
+from flask_login import login_user, logout_user, login_required
+from .app import app, db
+from .form import LoginForm, NewUserForm, AlbumForm
+from .models import User, Album, Artiste, Genre, get_artistes, get_albums, get_albums_par_artiste, get_albums_par_genre, \
+	ajouter_album, ajouter_album_genre, ajouter_genre
 
-SITENAME="FL45K-MU51C"
+SITENAME = "FL45K-MU51C"
+
 
 @app.route("/")
 def home():
-	return render_template("home.html",title=SITENAME, pagetitle="Accueil")
+	return render_template("home.html", title=SITENAME, pagetitle="Accueil")
+
 
 ########################### ARTISTES ##########################################
 @app.route("/artist/list")
 def artist_list():
-	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes"  , l_artists=get_artistes())
+	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes", l_artists=get_artistes())
+
 
 @app.route("/artist/add")
 @login_required
 def artist_add():
-	return render_template("artist-form.html", title=SITENAME, pagetitle="Ajouter un nouvel artiste" ,msg="" , l_artists=[])
+	return render_template("artist-form.html", title=SITENAME, pagetitle="Ajouter un nouvel artiste", msg="",
+						   l_artists=[])
+
 
 @app.route("/artist/update")
 @login_required
 def artist_update():
-	return render_template("artist-form.html", title=SITENAME, pagetitle="Modifier les informations d'un artiste" ,msg="" , l_artists=[])
+	return render_template("artist-form.html", title=SITENAME, pagetitle="Modifier les informations d'un artiste",
+						   msg="", l_artists=[])
+
 
 @app.route("/artist/save")
 @login_required
 def artist_save():
-	msg="Artiste non enregistré"
+	msg = "Artiste non enregistré"
 	return redirect(url_for("artist_list", msg=msg))
+
 
 @app.route("/artist/delete")
 @login_required
 def artist_delete():
-	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes" ,msg="" , l_artists=[])
+	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes", msg="", l_artists=[])
 
 
 ########################### AUTHENTIFICATION ##########################################
 
 @app.route("/login/", methods=("GET", "POST",))
 def login():
-	f=LoginForm()
+	f = LoginForm()
 	if not f.is_submitted():
 		f.next.data = request.args.get("next")
 	elif f.validate_on_submit():
@@ -50,7 +59,7 @@ def login():
 			login_user(user)
 			next = f.next.data or url_for("home")
 			return redirect(next)
-	return render_template("login.html",form=f)
+	return render_template("login.html", form=f)
 
 
 @app.route("/logout/")
@@ -58,10 +67,11 @@ def logout():
 	logout_user()
 	return redirect(url_for('home'))
 
+
 # ########################### NEW USER #########################################
 @app.route("/user/new/", methods=("GET", "POST",))
 def create_account():
-	f=NewUserForm()
+	f = NewUserForm()
 	if not f.is_submitted():
 		f.next.data = request.args.get("next")
 	elif f.validate_on_submit():
@@ -75,25 +85,60 @@ def create_account():
 			login_user(user)
 			next = f.next.data or url_for("home")
 			return redirect(next)
-	return render_template("usercreation-form.html",form=f)
+	return render_template("usercreation-form.html", form=f)
+
 
 # ########################### ALBUMS ###########################################
 @app.route("/album/list")
 def album_list():
-	return render_template("album-list.html",title=SITENAME,pagetitle="Liste des albums", l_albums=get_albums())
+	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums", l_albums=get_albums())
+
 
 @app.route("/album/by/artist <string:artist_id>")
 def album_list_by_artist(artist_id):
-	a=Artiste.query.get(artist_id)
-	return render_template("album-list.html",title=SITENAME,pagetitle="Liste des albums de {0}".format(a.nom_artiste), l_albums=get_albums_par_artiste(a.id_artiste))
+	a = Artiste.query.get(artist_id)
+	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums de {0}".format(a.nom_artiste),
+						   l_albums=get_albums_par_artiste(a.id_artiste))
+
 
 @app.route("/album/by/genre <string:genre>")
 def album_list_by_genre(genre):
-	return render_template("album-list.html",title=SITENAME,pagetitle="Liste des albums", l_albums=get_albums_par_genre(genre))
+	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums",
+						   l_albums=get_albums_par_genre(genre))
 
 
-# ########################### GENRES ############################################
-#
-# @app.route("/genre/list")
-# def artist_list():
-# 	return render_template("artist-list.html",title=SITENAME,pagetitle="Liste des genres", l_artists=[])
+@app.route("/album/new/", methods=("GET", "POST",))
+def album_add():
+	f = AlbumForm()
+	genres = Genre.query.all()
+	f.genres.choices = [(i, genres[i]) for i in range(0, len(genres))]
+	mapping = dict((i, Genre.query.get(genres[i].nom_genre)) for i in range(len(genres)))
+	print('Route OK', f.errors)
+
+	if not f.is_submitted():
+		print('Not Submitted OK', request.args.get("next"))
+		f.next.data = request.args.get("next")
+
+	elif f.validate_on_submit():
+		print('Validation OK')
+
+		# On rajoute l'album dans la BDD
+		album=ajouter_album(f.title.data, f.releaseyear.data, f.img.data, f.get_artist_id())
+		print('Ajout album {0}'.format(album), album.id_album)
+
+		# On associe l'album aux genres enregistrés par l'utilisateur
+		if f.genre_add:
+			new_genre = ajouter_genre((f.genre_add.data).capitalize())
+			print(new_genre.nom_genre)
+			ajouter_album_genre(album.id_album, new_genre.nom_genre)
+			print("Nouveau Genre ajouté")
+
+		for g in f.genres.data:
+			ajouter_album_genre(album.id_album, mapping[g].nom_genre)
+
+		next = f.next.data or url_for("album_list")
+		return redirect(next)
+
+	print('Instanciation OK', f.data)
+	return render_template("album-form.html", form=f, genres_dispos=mapping, artistes=Artiste.query.all())
+

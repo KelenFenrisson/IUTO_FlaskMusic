@@ -5,17 +5,19 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
+
 def mkpath(p):
-    return os.path.normpath(os.path.join(os.path.dirname(__file__),p))
+	return os.path.normpath(os.path.join(os.path.dirname(__file__), p))
+
 
 app = Flask(__name__)
 app.debug = True
 app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 manager = Manager(app)
 Bootstrap(app)
-app.config['SQLALCHEMY_DATABASE_URI']=('sqlite:///'+mkpath('../application/models/music.db'))
+app.config['SQLALCHEMY_DATABASE_URI'] = ('sqlite:///' + mkpath('../application/models/music.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
-app. config ['SECRET_KEY'] = "5598d6910d68379ae752d2dc58c919be"
+app.config['SECRET_KEY'] = "5598d6910d68379ae752d2dc58c919be"
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
