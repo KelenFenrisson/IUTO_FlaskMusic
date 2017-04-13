@@ -85,7 +85,7 @@ def ajouter_artiste(nomartiste):
 def ajouter_album(titre, annee, image, idartiste):
 	db.session.add(Album(titre_album=titre, annee_album=annee, img_album=image, id_artiste=idartiste))
 	db.session.commit()
-	return Album.query.filter(and_(text("titre_album='{0}'".format(titre)), text("id_artiste='{0}'".format(idartiste)))).first()
+	return Album.query.filter(and_(Album.titre_album==titre, Album.id_artiste==idartiste)).first()
 
 
 def ajouter_genre(nomgenre):
@@ -97,4 +97,4 @@ def ajouter_genre(nomgenre):
 def ajouter_album_genre(idalbum, nomgenre):
 	db.session.add(Album_Genre(id_album=idalbum, nom_genre=nomgenre))
 	db.session.commit()
-	return Album_Genre.query.filter(and_(text("id_album={0}".format(idalbum)), text("nom_genre='{0}'".format(nomgenre)))).first()
+	return Album_Genre.query.filter(and_(Album_Genre.id_album==idalbum, Album_Genre.nom_genre==nomgenre)).first()
