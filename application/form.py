@@ -1,11 +1,11 @@
+from flask_wtf.file import FileField, FileRequired
 from hashlib import sha256
-
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, HiddenField, BooleanField, FileField, IntegerField, SelectMultipleField
-from wtforms.validators import DataRequired, EqualTo, Regexp
+from wtforms import PasswordField, StringField, HiddenField, BooleanField, IntegerField, SelectMultipleField, \
+	SubmitField
+from wtforms.validators import DataRequired, EqualTo
 from wtforms.widgets import ListWidget, CheckboxInput
-from application import db
-from .models import User, Genre, Artiste, ajouter_genre, ajouter_artiste
+from .models import User, Artiste, ajouter_artiste
 
 
 ################################ CODE EXTERNE ##################################
@@ -59,21 +59,30 @@ class NewUserForm(FlaskForm):
 class AlbumForm(FlaskForm):
 	album_id = HiddenField()
 	title = StringField("Titre de l'album", [DataRequired(message="Vous devez entrer un titre d'album")])
-	releaseyear = IntegerField("Année de sortie")
+	releaseyear = IntegerField("Année de sortie", [DataRequired(message="Vous devez entrer une année de sortie")])
 	artist = StringField("Artiste", validators=[DataRequired(message="Vous devez entrer un nom d'artiste")])
-	img = FileField('Fichier Image', validators=[Regexp('^[A-Za-z0-9]\.jpg$')])
+	img = StringField('Chemin vers Image', validators=[DataRequired(message="Vous devez entrer un chemin vers une image")])
 	genres = MultiCheckboxField(choices=[], coerce=int)
 	genre_add = StringField("Autre genre")
+	submit_btn = SubmitField("Valider")
 	next = HiddenField()
 
 	def get_artist_id(self):
 		"""
-		retourne l'id_artite d'un nouvel artiste
+		retourne l'id_artiste d'un nouvel artiste
 		créé en fonction de l'input utilisateur
 		"""
 		artiste = Artiste.query.filter_by(nom_artiste=self.artist.data).first()
 		if artiste is None:
 			new_artist = ajouter_artiste(self.artist.data)
 		else:
-			new_artist=artiste
+			new_artist = artiste
 		return new_artist.id_artiste
+
+	def upload(self, request):
+		""" Upload le fichier image du formulaire dans static/img """
+		if self.data.img:
+			image_data = request.FILES[self.img.name].read()
+
+			from application.app import mkpath
+			open(mkpath("static/img/" + self.img.data), 'w').write(image_data)

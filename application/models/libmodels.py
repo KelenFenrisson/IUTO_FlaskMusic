@@ -79,7 +79,7 @@ def get_genres():
 def ajouter_artiste(nomartiste):
 	db.session.add(Artiste(nom_artiste=nomartiste))
 	db.session.commit()
-	return Artiste.query.filter(nom_artiste=nomartiste).first()
+	return Artiste.query.filter_by(nom_artiste=nomartiste).first()
 
 
 def ajouter_album(titre, annee, image, idartiste):

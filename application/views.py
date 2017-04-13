@@ -1,8 +1,9 @@
 from flask import render_template, url_for, redirect, request
 from flask_login import login_user, logout_user, login_required
+
 from .app import app, db
 from .form import LoginForm, NewUserForm, AlbumForm
-from .models import User, Album, Artiste, Genre, get_artistes, get_albums, get_albums_par_artiste, get_albums_par_genre, \
+from .models import User, Artiste, Genre, get_artistes, get_albums, get_albums_par_artiste, get_albums_par_genre, \
 	ajouter_album, ajouter_album_genre, ajouter_genre
 
 SITENAME = "FL45K-MU51C"
@@ -113,7 +114,15 @@ def album_add():
 	genres = Genre.query.all()
 	f.genres.choices = [(i, genres[i]) for i in range(0, len(genres))]
 	mapping = dict((i, Genre.query.get(genres[i].nom_genre)) for i in range(len(genres)))
-	print('Route OK', f.errors)
+
+
+	print("Route OK erreurs={0}".format(f.errors, f.validate()),
+		  "Titre album valide"*f.title.validate(f),
+		  "Année de sortie valide" * f.releaseyear.validate(f),
+		  "Artiste valide" * f.artist.validate(f),
+		  "Image valide" * f.img.validate(f),
+		  "Genres valides"* f.genres.validate(f),
+		  "Nouveau genre valide" * f.genre_add.validate(f), sep="\n")
 
 	if not f.is_submitted():
 		print('Not Submitted OK', request.args.get("next"))
@@ -128,7 +137,7 @@ def album_add():
 
 		# On associe l'album aux genres enregistrés par l'utilisateur
 		if f.genre_add:
-			new_genre = ajouter_genre((f.genre_add.data).capitalize())
+			new_genre = ajouter_genre(f.genre_add.data.capitalize())
 			print(new_genre.nom_genre)
 			ajouter_album_genre(album.id_album, new_genre.nom_genre)
 			print("Nouveau Genre ajouté")
@@ -139,6 +148,5 @@ def album_add():
 		next = f.next.data or url_for("album_list")
 		return redirect(next)
 
-	print('Instanciation OK', f.data)
 	return render_template("album-form.html", form=f, genres_dispos=mapping, artistes=Artiste.query.all())
 
