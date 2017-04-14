@@ -26,11 +26,11 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Albums <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Rechercher</a></li>
-                <li><a href="#">Ajouter</a></li>
-                <li><a href="#">Modifier</a></li>
+                <li><a href="{{ url_for('album_list')}}">Rechercher</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Actions administrateur</li>
+                <li class="dropdown-header">Actions utilisateurs</li>
+                <li><a href="{{ url_for('album_add')}}">Ajouter</a></li>
+                <li><a href="#">Modifier</a></li>
                 <li><a href="#">Supprimer</a></li>
               </ul>
             </li>
@@ -38,10 +38,10 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Artistes <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="{{ url_for('artist_list') }}">Rechercher</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Actions utilisateurs</li>
                 <li><a href="#">Ajouter</a></li>
                 <li><a href="#">Modifier</a></li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Actions administrateur</li>
                 <li><a href="#">Supprimer</a></li>
               </ul>
             </li>
@@ -49,10 +49,10 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Genres <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#">Rechercher</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Actions utilisateurs</li>
                 <li><a href="#">Ajouter</a></li>
                 <li><a href="#">Modifier</a></li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Actions administrateur</li>
                 <li><a href="#">Supprimer</a></li>
               </ul>
             </li>
