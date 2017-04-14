@@ -8,10 +8,10 @@
   </header>
 
   {% for album in l_albums %}
-  <section class="col-lg-4 col-md-6 text-center" height="600" >
+  <section class="col-lg-4 col-md-6 text-center">
       <img class="img-thumbnail" width="200" height="200" {% if album.img_album == None %}
 
-            src="../static/img/pas_photo.jpeg"
+            src="../static/img/pas_photo.png"
 
            {% else %}
 
@@ -25,14 +25,10 @@
       <h4>Par <a href="{{ url_for('album_list_by_artist', artist_id=album.artiste.id_artiste) }}">{{ album.artiste.nom_artiste }}</a></h4>
       <p>Genres : {% for genre in album.album_genre %} <a href="{{ url_for('album_list_by_genre', genre=genre.nom_genre) }}">{{ genre.nom_genre }}</a>, {% endfor %}</p>
 
-  </section>
-  {% endfor %}
 
-  <!-- <footer>
-    <p>
-      Maecenas a ante auctor, elementum justo vel, ullamcorper orci. Cras aliquam nec tortor ut placerat. Sed eu vehicula lorem.
-    </p>
-  </footer> -->
+  </section>
+{% endfor %}
+
 </article>
 
 {% endblock %}

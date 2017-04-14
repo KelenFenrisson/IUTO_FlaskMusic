@@ -79,7 +79,7 @@ def album_list_by_artist(artist_id):
 
 @app.route("/album/by/genre <string:genre>")
 def album_list_by_genre(genre):
-	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums",l_albums=get_albums_par_genre(genre))
+	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums de genre {0}".format(genre),l_albums=get_albums_par_genre(genre))
 
 
 @app.route("/album/new/", methods=("GET", "POST",))
