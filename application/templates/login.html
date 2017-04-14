@@ -2,7 +2,8 @@
 
 {% block main %}
 
-<div id="contour-login" class="col-lg-offset-2 col-lg-6 col-md-offset-2 col-md-8">
+<div class="col-lg-offset-2 col-lg-6 col-md-offset-2 col-md-8 contour">
+  
 <form class="form-horizontal" role="form" method="POST" action="{{ url_for('login') }}">
   {{ form.hidden_tag() }}
 

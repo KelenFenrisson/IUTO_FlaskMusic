@@ -2,8 +2,12 @@
   margin-top: 5em;
 }
 
-#contour-login{
+.contour{
   border: black solid 1px;
   border-radius:10px;
   padding-top: 15px;
+}
+
+.pad-label{
+  padding-top: 7px;
 }

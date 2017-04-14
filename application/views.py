@@ -3,49 +3,25 @@ from flask_login import login_user, logout_user, login_required
 
 from .app import app, db
 from .form import LoginForm, NewUserForm, AlbumForm
-from .models import User, Artiste, Genre, get_artistes, get_albums, get_albums_par_artiste, get_albums_par_genre, \
+from .models import User, Artiste, Genre, get_artistes, get_albums, get_albums_par_artiste, get_albums_par_genre, get_genres,\
 	ajouter_album, ajouter_album_genre, ajouter_genre
 
 SITENAME = "FL45K-MU51C"
 
-
+########################### ACCUEIL ##########################################
 @app.route("/")
 def home():
-	return render_template("home.html", title=SITENAME, pagetitle="Accueil")
-
+	return render_template("album-list.html", title=SITENAME, pagetitle="Accueil", l_albums=get_albums())
 
 ########################### ARTISTES ##########################################
 @app.route("/artist/list")
 def artist_list():
 	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes", l_artists=get_artistes())
 
-
-@app.route("/artist/add")
-@login_required
-def artist_add():
-	return render_template("artist-form.html", title=SITENAME, pagetitle="Ajouter un nouvel artiste", msg="",
-						   l_artists=[])
-
-
-@app.route("/artist/update")
-@login_required
-def artist_update():
-	return render_template("artist-form.html", title=SITENAME, pagetitle="Modifier les informations d'un artiste",
-						   msg="", l_artists=[])
-
-
-@app.route("/artist/save")
-@login_required
-def artist_save():
-	msg = "Artiste non enregistré"
-	return redirect(url_for("artist_list", msg=msg))
-
-
-@app.route("/artist/delete")
-@login_required
-def artist_delete():
-	return render_template("artist-list.html", title=SITENAME, pagetitle="Liste des artistes", msg="", l_artists=[])
-
+########################### GENRES ##########################################
+@app.route("/genre/list")
+def genre_list():
+	return render_template("genre-list.html", title=SITENAME, pagetitle="Liste des genres", l_genres=get_genres())
 
 ########################### AUTHENTIFICATION ##########################################
 
@@ -109,6 +85,7 @@ def album_list_by_genre(genre):
 
 
 @app.route("/album/new/", methods=("GET", "POST",))
+@login_required
 def album_add():
 	f = AlbumForm()
 	genres = Genre.query.all()
@@ -149,4 +126,3 @@ def album_add():
 		return redirect(next)
 
 	return render_template("album-form.html", form=f, genres_dispos=mapping, artistes=Artiste.query.all())
-
