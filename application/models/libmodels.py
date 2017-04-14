@@ -55,6 +55,8 @@ class Genre(db.Model):
 def get_artistes():
 	return Artiste.query.all()
 
+def get_artist_by_name(name_artiste):
+	return Artiste.query.filter_by(nom_artiste=name_artiste).first()
 
 def get_albums():
 	return Album.query.all()

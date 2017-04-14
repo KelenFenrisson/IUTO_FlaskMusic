@@ -46,7 +46,7 @@ def loaddb(filename):
 	albums = yaml.load(open(filename))
 
 	# import des modèles
-	from .models import Album, Artiste, Genre, Album_Genre
+	from .models import Album, Artiste, Genre, Album_Genre, get_artist_by_name
 
 	artistes = set()
 	genres = set()
@@ -60,12 +60,14 @@ def loaddb(filename):
 			db.session.commit()
 			artistes.add(nom_artiste)
 
+		id_art=get_artist_by_name(artiste.nom_artiste).id_artiste
+
 		# création de tous les albums
 		o = Album(id_album=album["entryId"],
 				  titre_album=album["title"],
 				  annee_album=album["releaseYear"],
 				  img_album=album["img"],
-				  id_artiste=artiste.id_artiste)
+				  id_artiste=id_art)
 		db.session.add(o)
 		db.session.commit()
 
