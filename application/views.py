@@ -171,6 +171,7 @@ def album_save():
 		# On associe l'album aux genres enregistrés par l'utilisateur
 		if f.genre_add != "":
 			new_genre = ajouter_genre(f.genre_add.data.capitalize())
+			print(new_genre.nom_genre)
 			ajouter_album_genre(album.id_album, new_genre.nom_genre)
 			print("Nouveau Genre ajouté")
 
