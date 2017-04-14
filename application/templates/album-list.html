@@ -9,17 +9,26 @@
 
   {% for album in l_albums %}
   <section class="col-lg-4 col-md-6 text-center" height="600" >
-      <img class="img-thumbnail" width="200" height="200" {% if album.img_album == None %}
 
-            src="../static/img/pas_photo.jpeg"
+    {% if album.img_album != None %}
 
-           {% else %}
+        {% if album.img_album in thumbnails %}
 
-            src="{{ url_for('static', filename='img/'+ album.img_album if album.img_album ) }}"
+            <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/'+ album.img_album) }}" alt="{{ album.titre_album }}" >
 
-           {%endif%}
+        {% else %}
 
-            alt="Ne peut pas s'afficher" >
+            <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/pas_photo.jpg') }}" alt="Photo de {{ album.titre_album }} non répertoriée" >
+
+        {% endif %}
+
+    {% else %}
+
+        <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/pas_photo.jpg') }}" alt="Photo de {{ album.titre_album }} non disponible" >
+
+    {%endif%}
+
+
 
       <h3>{{ album.titre_album }}</h3>
       <h4>Par <a href="{{ url_for('album_list_by_artist', artist_id=album.artiste.id_artiste) }}">{{ album.artiste.nom_artiste }}</a></h4>

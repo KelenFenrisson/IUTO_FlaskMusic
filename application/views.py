@@ -1,3 +1,6 @@
+import glob
+import os
+
 from flask import render_template, url_for, redirect, request
 from flask_login import login_user, logout_user, login_required
 from sqlalchemy import and_
@@ -10,10 +13,19 @@ from .models import User, Artiste, Genre, get_artistes, get_albums, get_albums_p
 
 SITENAME = "FL45K-MU51C"
 
+################################################  FONCTIONS D'AIDE ####################################################
+
+def get_imagefile_names():
+	""" Va récupérer dans ../application/static/img/ les noms des fichiers images"""
+	return set(os.path.basename(f) for f in glob.glob(os.path.join(os.path.normpath(os.path.join(os.path.dirname(__file__), "../application/static/img/")), '*')))
+
+########################################################################################################################
+
 ########################### ACCUEIL ##########################################
 @app.route("/")
 def home():
-	return render_template("album-list.html", title=SITENAME, pagetitle="Accueil", l_albums=get_albums())
+	imgset = get_imagefile_names()
+	return render_template("album-list.html", title=SITENAME, pagetitle="Accueil", l_albums=get_albums(), thumbnails=imgset)
 
 ########################### ARTISTES ##########################################
 @app.route("/artist/list")
@@ -70,18 +82,21 @@ def create_account():
 # ########################### ALBUMS ###########################################
 @app.route("/album/list")
 def album_list():
-	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums", l_albums=get_albums())
+	imgset = get_imagefile_names()
+	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums", l_albums=get_albums(), thumbnails=imgset)
 
 
 @app.route("/album/by/artist <string:artist_id>")
 def album_list_by_artist(artist_id):
+	imgset = get_imagefile_names()
 	a = Artiste.query.get(artist_id)
-	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums de {0}".format(a.nom_artiste),l_albums=get_albums_par_artiste(a.id_artiste))
+	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums de {0}".format(a.nom_artiste),l_albums=get_albums_par_artiste(a.id_artiste), thumbnails=imgset)
 
 
 @app.route("/album/by/genre <string:genre>")
 def album_list_by_genre(genre):
-	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums",l_albums=get_albums_par_genre(genre))
+	imgset = get_imagefile_names()
+	return render_template("album-list.html", title=SITENAME, pagetitle="Liste des albums du genre {0}".format(genre),l_albums=get_albums_par_genre(genre), thumbnails=imgset)
 
 
 @app.route("/album/new/")
