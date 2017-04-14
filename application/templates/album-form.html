@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block main %}
-    <form class="form-horizontal" role="form" method="POST" action="{{ url_for('album_add') }}">
+    <form class="form-horizontal" role="form" method="POST" action="{{ url_for('album_save') }}">
 
         {{ form.hidden_tag() }}
 
@@ -28,7 +28,7 @@
                 {{ form.artist.label }}
             </label>
             <div class="col-sm-10">
-                {{ form.artist(size=1, class_="form-control", list="artist_datalist", required=form.releaseyear.flags.required) }}
+                {{ form.artist(size=1, class_="form-control", list="artist_datalist", required=form.artist.flags.required) }}
                 <datalist id="artist_datalist">
                     {% for a in artistes %}
                         <option value="{{ a.nom_artiste }}">

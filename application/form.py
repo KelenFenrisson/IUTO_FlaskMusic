@@ -61,7 +61,7 @@ class AlbumForm(FlaskForm):
 	title = StringField("Titre de l'album", [DataRequired(message="Vous devez entrer un titre d'album")])
 	releaseyear = IntegerField("Année de sortie", [DataRequired(message="Vous devez entrer une année de sortie")])
 	artist = StringField("Artiste", validators=[DataRequired(message="Vous devez entrer un nom d'artiste")])
-	img = StringField('Chemin vers Image', validators=[DataRequired(message="Vous devez entrer un chemin vers une image")])
+	img = StringField('Chemin vers Image')
 	genres = MultiCheckboxField(choices=[], coerce=int)
 	genre_add = StringField("Autre genre")
 	submit_btn = SubmitField("Valider")
