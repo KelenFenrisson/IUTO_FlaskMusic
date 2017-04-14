@@ -2,36 +2,50 @@
 
 {% block main %}
 
-<article class="">
   <header>
       <h2>{{pagetitle}}</h2>
 
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       </p>
+
   </header>
+
   <section>
-    {% for artist in l_artists %}
-    <h2>{{ artist.nom_artiste }}</h2>
-      <table>
-        <tr>
-          <th>Album</th>
-          <th>Genres</th>
+
+  <div class="table-bordered">
+    <table class="table">
+      <thead>
+
+      <tr class="success">
+        <th>Artiste</th>
+        <th>Album</th>
+        <th>Genres</th>
+      </tr>
+
+      {% for artist in l_artists %}
+        <tr class="info">
+          <th> <a href="{{ url_for('album_list_by_artist', artist_id=artist.id_artiste) }}">{{ artist.nom_artiste }}</a></th>
+          <th></th>
+          <th></th>
         </tr>
+
+
+        </thead>
+
         {% for album in artist.albums %}
-        <tr>
-          <th>{{ album.titre_album }}</th>
-          <th>{% for genre in album.album_genre %}{{ genre.nom_genre }}, {% endfor %}</th>
-        </tr>
+        <tbody>
+            <tr class="active">
+              <td></td>
+              <td>{{ album.titre_album }}</td>
+              <td>{% for genre in album.album_genre %}<a href="{{ url_for('album_list_by_genre', genre=genre.nom_genre) }}">{{ genre.nom_genre }} ,</a> {% endfor %}</td>
+            </tr>
+        </tbody>
         {% endfor %}
-      </table>
-    {% endfor %}
+
+      {% endfor %}
+    </table>
+</div>
   </section>
-  <footer>
-    <p>
-      Maecenas a ante auctor, elementum justo vel, ullamcorper orci. Cras aliquam nec tortor ut placerat. Sed eu vehicula lorem.
-    </p>
-  </footer>
-</article>
 
 {% endblock %}
