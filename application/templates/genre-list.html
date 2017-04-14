@@ -13,7 +13,7 @@
   <section>
     {% for genre in l_genres %}
 
-      <h3><a href="">{{ genre.nom_genre }}</a></h3>
+      <h3><a href="{{ url_for('album_list_by_genre', genre=genre.nom_genre) }}">{{ genre.nom_genre }}</a></h3>
 
     {% endfor %}
   </section>
