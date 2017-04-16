@@ -1,7 +1,8 @@
 import glob
 import os
 
-from flask import render_template, url_for, redirect, request
+import requests
+from flask import render_template, url_for, redirect, request, json
 from flask_login import login_user, logout_user, login_required
 from sqlalchemy import and_
 
@@ -18,6 +19,27 @@ SITENAME = "FL45K-MU51C"
 def get_imagefile_names():
 	""" Va récupérer dans ../application/static/img/ les noms des fichiers images"""
 	return set(os.path.basename(f) for f in glob.glob(os.path.join(os.path.normpath(os.path.join(os.path.dirname(__file__), "../application/static/img/")), '*')))
+
+
+def get_deezertracklist(album):
+	"""
+	Interroge l'API Deezer et recupère les infos de l'album
+	:param album: Instance d'Album
+	:return: un dictionnaire
+	"""
+	a_info = None
+	deezerinfo = json.loads(requests.get(
+		'https://api.deezer.com/search?q=artist:"{0}" album:"{1}"'.format(album.artiste.nom_artiste,
+																		  album.titre_album)).content)['data']
+
+	i = 0
+	while a_info is None and i < len(deezerinfo):
+		if deezerinfo[i]['album']['title'] == album.titre_album:
+			a_info = json.loads(requests.get(
+		'https://api.deezer.com/album/{0}'.format(deezerinfo[i]['album']['id'])).content)
+		i+=1
+	return a_info['tracks']['data']
+
 
 ########################################################################################################################
 
@@ -80,6 +102,15 @@ def create_account():
 
 
 # ########################### ALBUMS ###########################################
+
+@app.route("/album/view/<int:id>")
+def album_view(id):
+	imgset = get_imagefile_names()
+	album = Album.query.get(id)
+	deezerinfo = get_deezertracklist(album)
+	has_cover = (album.img_album is not None) and (album.img_album in imgset)
+	return render_template("album-view.html", title=SITENAME, pagetitle=album.titre_album, album=album, has_cover=has_cover, info=deezerinfo)
+
 @app.route("/album/list")
 def album_list():
 	imgset = get_imagefile_names()

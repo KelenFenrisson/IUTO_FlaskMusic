@@ -30,7 +30,7 @@
 
 
 
-      <h3>{{ album.titre_album }}</h3>
+      <h3><a href="{{ url_for('album_view', id=album.id_album) }}">{{ album.titre_album }}</a></h3>
       <h4>Par <a href="{{ url_for('album_list_by_artist', artist_id=album.artiste.id_artiste) }}">{{ album.artiste.nom_artiste }}</a></h4>
       <p>Genres : {% for genre in album.album_genre %} <a href="{{ url_for('album_list_by_genre', genre=genre.nom_genre) }}">{{ genre.nom_genre }}</a>, {% endfor %}</p>
 
