@@ -139,6 +139,15 @@ def album_add():
 	mapping = dict((i, Genre.query.get(genres[i].nom_genre)) for i in range(len(genres)))
 	return render_template("album-form.html", form=f, genres_dispos=mapping, artistes=Artiste.query.all())
 
+@app.route("/album/delete/<int:id>")
+@login_required
+def album_delete(id):
+	Album_Genre.query.filter_by(id_album=id).delete()
+	Album.query.filter_by(id_album=id).delete()
+	db.session.commit()
+	imgset = get_imagefile_names()
+	return render_template("album-list.html", title=SITENAME, pagetitle="La suppression c'est fait correctement", l_albums=get_albums(), thumbnails=imgset)
+
 @app.route("/album/update/<int:id>")
 @login_required
 def album_update(id):
@@ -214,5 +223,3 @@ def album_save():
 
 	next = f.next.data or url_for("album_list")
 	return redirect(next)
-
-

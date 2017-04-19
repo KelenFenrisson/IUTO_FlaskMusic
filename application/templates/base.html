@@ -32,8 +32,8 @@
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Actions utilisateurs</li>
                 <li><a href="{{ url_for('album_add')}}">Ajouter</a></li>
-                <li><a href="{{ url_for('album_add')}}">Modifier</a></li>
-                <li><a href="{{ url_for('album_add')}}">Supprimer</a></li>
+                <li><a href="{{ url_for('album_list')}}">Modifier</a></li>
+                <li><a href="{{ url_for('album_list')}}">Supprimer</a></li>
               </ul>
             </li>
 
@@ -54,7 +54,6 @@
                 {% else %}
                   <a href="{{ url_for('login') }}">Se connecter</a>
                 {% endif%}
-
             </li>
           </ul>
         </div><!--/.nav-collapse -->
