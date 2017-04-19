@@ -7,6 +7,13 @@
       <h2>{{pagetitle}}</h2>
   </header>
 
+  <section class="col-lg-4 col-md-6 text-center heigth370">
+
+    <a href="{{ url_for('album_add')}}"><img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/ajout.jpeg') }}"></a>
+    <h3>Ajouter un album</a></h3>
+
+  </section>
+
   {% for album in l_albums %}
 
   {% if current_user.is_authenticated %}
