@@ -36,9 +36,9 @@ def get_deezertracklist(album):
 	while a_info is None and i < len(deezerinfo):
 		if deezerinfo[i]['album']['title'] == album.titre_album:
 			a_info = json.loads(requests.get(
-		'https://api.deezer.com/album/{0}'.format(deezerinfo[i]['album']['id'])).content)
+		'https://api.deezer.com/album/{0}'.format(deezerinfo[i]['album']['id'])).content)['tracks']['data']
 		i+=1
-	return a_info['tracks']['data']
+	return a_info
 
 
 ########################################################################################################################
@@ -109,7 +109,7 @@ def album_view(id):
 	album = Album.query.get(id)
 	deezerinfo = get_deezertracklist(album)
 	has_cover = (album.img_album is not None) and (album.img_album in imgset)
-	return render_template("album-view.html", title=SITENAME, pagetitle=album.titre_album, album=album, has_cover=has_cover, info=deezerinfo)
+	return render_template("album-view.html", title=SITENAME, pagetitle=album.titre_album, album=album, has_cover=has_cover, info=deezerinfo, thumbnails=imgset)
 
 @app.route("/album/list")
 def album_list():

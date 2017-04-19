@@ -6,28 +6,34 @@
   <header>
       <h2>{{pagetitle}}</h2>
   </header>
-
+    {% if album.img_album != None %}
+        {% if album.img_album in thumbnails %}
+            <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/'+ album.img_album) }}" alt="{{ album.titre_album }}" >
+        {% else %}
+            <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/pas_photo.jpg') }}" alt="Photo de {{ album.titre_album }} non répertoriée" >
+        {% endif %}
+    {% else %}
+        <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/pas_photo.jpg') }}" alt="Photo de {{ album.titre_album }} non disponible" >
+    {%endif%}
     <p>Genres : {% for genre in album.album_genre %} <a href="{{ url_for('album_list_by_genre', genre=genre.nom_genre) }}">{{ genre.nom_genre }}</a>, {% endfor %}</p>
     <p>Interprété par {{ album.artiste.nom_artiste }}</p>
     <p>Sorti en {{ album.annee_album }}</p>
 
-    <h5>Pistes</h5>
-    <ol>
-        {% for d in info %}
-        <li>
-            <p>Titre : {{ d['title'] }}</p>
-            <p>Durée : {{ d['duration'] }}</p>
-        </li>
-        {% endfor %}
-    </ol>
+
+    {% if info != None %}
+        <h5>Pistes</h5>
+        <ol>
+            {% for d in info %}
+            <li>
+                <p>Titre : {{ d['title'] }}</p>
+                <p>Durée : {{ d['duration'] }} s.</p>
+            </li>
+            {% endfor %}
+        </ol>
+    {% endif %}
 
 
 
-  <!-- <footer>
-    <p>
-      Maecenas a ante auctor, elementum justo vel, ullamcorper orci. Cras aliquam nec tortor ut placerat. Sed eu vehicula lorem.
-    </p>
-  </footer> -->
 </article>
 
 {% endblock %}
