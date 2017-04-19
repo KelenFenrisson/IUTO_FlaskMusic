@@ -27,6 +27,10 @@
             <li>
                 <p>Titre : {{ d['title'] }}</p>
                 <p>Durée : {{ d['duration'] }} s.</p>
+                <audio controls>
+                    <source src="{{ d['preview'] }}" type="audio/mpeg">
+                    Extrait non supporté par votre navigateur.
+                </audio>
             </li>
             {% endfor %}
         </ol>

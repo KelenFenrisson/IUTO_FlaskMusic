@@ -38,6 +38,11 @@ def get_deezertracklist(album):
 			a_info = json.loads(requests.get(
 		'https://api.deezer.com/album/{0}'.format(deezerinfo[i]['album']['id'])).content)['tracks']['data']
 		i+=1
+
+	if a_info is None :
+		for data in deezerinfo:
+			print(data)
+
 	return a_info
 
 
