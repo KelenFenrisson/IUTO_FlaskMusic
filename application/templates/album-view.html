@@ -20,20 +20,23 @@
     <p>Sorti en {{ album.annee_album }}</p>
 
 
-    {% if info != None %}
+    {% if tracks != None %}
         <h5>Pistes</h5>
         <ol>
-            {% for d in info %}
+            {% for t in tracks %}
             <li>
-                <p>Titre : {{ d['title'] }}</p>
-                <p>Durée : {{ d['duration'] }} s.</p>
+                <p>Titre : {{ t['title'] }}</p>
+                <p>Durée : {{ t['duration'] }} s.</p>
                 <audio controls>
-                    <source src="{{ d['preview'] }}" type="audio/mpeg">
+                    <source src="{{ t['preview'] }}" type="audio/mpeg">
                     Extrait non supporté par votre navigateur.
                 </audio>
             </li>
             {% endfor %}
         </ol>
+    {% else %}
+        <p>Cet album n'est pas référencé chez notre partenaire. <a href="http://www.deezer.com/fr/" target="_blank">Soyez le premier à leur faire découvrir !</a></p>
+
     {% endif %}
 
 

@@ -27,23 +27,23 @@ def get_deezertracklist(album):
 	:param album: Instance d'Album
 	:return: un dictionnaire
 	"""
-	a_info = None
+	tracklist = None
 	deezerinfo = json.loads(requests.get(
-		'https://api.deezer.com/search?q=artist:"{0}" album:"{1}"'.format(album.artiste.nom_artiste,
-																		  album.titre_album)).content)['data']
+		'http://api.deezer.com/search/album?q={0}'.format(album.titre_album)).content)
+
+	# print('_____________________ Reponse __________________')
+	# for i in deezerinfo:
+	# 	print(i, deezerinfo[i])
+	# for k in deezerinfo['data']:
+	# 	print(k)
 
 	i = 0
-	while a_info is None and i < len(deezerinfo):
-		if deezerinfo[i]['album']['title'] == album.titre_album:
-			a_info = json.loads(requests.get(
-		'https://api.deezer.com/album/{0}'.format(deezerinfo[i]['album']['id'])).content)['tracks']['data']
+	while i < len(deezerinfo['data']) and tracklist is None:
+		if deezerinfo['data'][i]['artist']['name'] == album.artiste.nom_artiste:
+			tracklist = json.loads(requests.get(deezerinfo['data'][i]['tracklist']).content)['data']
 		i+=1
 
-	if a_info is None :
-		for data in deezerinfo:
-			print(data)
-
-	return a_info
+	return tracklist
 
 
 ########################################################################################################################
@@ -114,7 +114,7 @@ def album_view(id):
 	album = Album.query.get(id)
 	deezerinfo = get_deezertracklist(album)
 	has_cover = (album.img_album is not None) and (album.img_album in imgset)
-	return render_template("album-view.html", title=SITENAME, pagetitle=album.titre_album, album=album, has_cover=has_cover, info=deezerinfo, thumbnails=imgset)
+	return render_template("album-view.html", title=SITENAME, pagetitle=album.titre_album, album=album, has_cover=has_cover, tracks=deezerinfo, thumbnails=imgset)
 
 @app.route("/album/list")
 def album_list():
