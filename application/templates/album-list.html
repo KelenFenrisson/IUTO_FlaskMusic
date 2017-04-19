@@ -8,7 +8,12 @@
   </header>
 
   {% for album in l_albums %}
+
+  {% if current_user.is_authenticated %}
+  <section class="col-lg-4 col-md-6 text-center heigth370">
+  {% else %}
   <section class="col-lg-4 col-md-6 text-center heigth350" >
+  {% endif%}
 
       {% if album.img_album != None %}
           {% if album.img_album in thumbnails %}
@@ -22,10 +27,9 @@
 
 
     {% if current_user.is_authenticated %}
-
     <div>
-      <a href="{{ url_for('album_update',id=album.id_album)}}"><button type="button" class="btn btn-warning">Modifier</button></a>
-      <a href="{{ url_for('album_delete',id=album.id_album)}}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+      <a href="{{ url_for('album_update',id=album.id_album)}}"><button type="button" class="btn btn-warning padTopBot">Modifier</button></a>
+      <a href="{{ url_for('album_delete',id=album.id_album)}}"><button type="button" class="btn btn-danger padTopBot">Supprimer</button></a>
     </div>
     {% endif%}
 
