@@ -23,18 +23,8 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 
-            <li class="active"><a href="/">Accueil</a></li>
-
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Albums <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="{{ url_for('album_list')}}">Rechercher</a></li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Actions utilisateurs</li>
-                <li><a href="{{ url_for('album_add')}}">Ajouter</a></li>
-                <li><a href="{{ url_for('album_list')}}">Modifier</a></li>
-                <li><a href="{{ url_for('album_list')}}">Supprimer</a></li>
-              </ul>
+            <li class="active">
+              <li class="active"><a href="{{ url_for('album_list')}}">Albums</a></li>
             </li>
 
             <li class="active">
