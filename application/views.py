@@ -2,7 +2,7 @@ import glob
 import os
 
 import requests
-from flask import render_template, url_for, redirect, request, json
+from flask import flash, render_template, url_for, redirect, request, json
 from flask_login import login_user, logout_user, login_required
 from sqlalchemy import and_
 
@@ -147,11 +147,12 @@ def album_add():
 @app.route("/album/delete/<int:id>")
 @login_required
 def album_delete(id):
+	nom_album=(Album.query.get(id)).titre_album
 	Album_Genre.query.filter_by(id_album=id).delete()
 	Album.query.filter_by(id_album=id).delete()
 	db.session.commit()
-	imgset = get_imagefile_names()
-	return render_template("album-list.html", title=SITENAME, pagetitle="La suppression c'est fait correctement", l_albums=get_albums(), thumbnails=imgset)
+	flash("La suppression de {0} a été effectuée".format(nom_album), "alert-success")
+	return redirect(url_for('home'))
 
 @app.route("/album/update/<int:id>")
 @login_required
@@ -182,6 +183,7 @@ def album_update(id):
 @app.route("/album/save/", methods=("GET", "POST",))
 @login_required
 def album_save():
+
 	f=AlbumForm()
 	genres = Genre.query.all()
 	mapping = dict((i, Genre.query.get(genres[i].nom_genre)) for i in range(len(genres)))
@@ -196,35 +198,37 @@ def album_save():
 		  "Nouveau genre {0}valide".format( "non "*(not f.genre_add.validate(f))),
 		  sep="\n")
 	#f.validate_on_submit():
-	if True:
+	if f.validate_on_submit():
 		print('Validation OK')
-		album=None
-
 
 		if f.album_id.data!="":
 			# Si l'id de l'abum est défini, c'est une modification
 			album = modifier_album(f.album_id.data, f.title.data, f.releaseyear.data, f.img.data, f.get_artist_id())
-			print('Modification album {0}'.format(album), album.id_album)
+			flash('Modification album {0}'.format(album), "alert-success")
 
 
 		else :
 			#sinon, c'est l'ajout d'un nouvel album
 			# On rajoute l'album dans la BDD
 			album = ajouter_album(f.title.data, f.releaseyear.data, f.img.data, f.get_artist_id())
-			print('Ajout album {0}'.format(album), album.id_album)
+			flash('Ajout album {0}'.format(album), "alert-success")
 
 		# On associe l'album aux genres enregistrés par l'utilisateur
-		if f.genre_add != "":
+		if f.genre_add.data != "":
 			new_genre = ajouter_genre(f.genre_add.data.capitalize())
 			print(new_genre.nom_genre)
 			ajouter_album_genre(album.id_album, new_genre.nom_genre)
-			print("Nouveau Genre ajouté")
+			flash("Nouveau Genre {0} ajouté".format(new_genre.nom_genre), "alert-info")
 
 		for g in f.genres.data:
 			if Album_Genre.query.filter(and_(Album_Genre.id_album==f.album_id.data,
 											 Album_Genre.nom_genre==mapping[g].nom_genre)).first() is None:
 
 				ajouter_album_genre(album.id_album, mapping[g].nom_genre)
+
+	else:
+		flash("L'opération n'a pas été effectuée", "alert-danger")
+
 
 	next = f.next.data or url_for("album_list")
 	return redirect(next)

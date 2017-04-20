@@ -3,7 +3,7 @@ from hashlib import sha256
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, HiddenField, BooleanField, IntegerField, SelectMultipleField, \
 	SubmitField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import DataRequired, EqualTo, Optional
 from wtforms.widgets import ListWidget, CheckboxInput
 from .models import User, Artiste, ajouter_artiste
 
@@ -24,6 +24,11 @@ class MultiCheckboxField(SelectMultipleField):
 	"""
 	widget = ListWidget(prefix_label=False)
 	option_widget = CheckboxInput()
+
+
+	# La méthode suivante est *temporaire*. Sans, le formulaire ne valide pas.
+	def pre_validate(self, form):
+		""" Desactive la pre validation """
 
 
 ################################
@@ -57,12 +62,16 @@ class NewUserForm(FlaskForm):
 
 
 class AlbumForm(FlaskForm):
+
+	def validate_genres(self, genres):
+		return True
+
 	album_id = HiddenField()
-	title = StringField("Titre de l'album", [DataRequired(message="Vous devez entrer un titre d'album")])
-	releaseyear = IntegerField("Année de sortie", [DataRequired(message="Vous devez entrer une année de sortie")])
+	title = StringField("Titre de l'album", validators=[DataRequired(message="Vous devez entrer un titre d'album")])
+	releaseyear = IntegerField("Année de sortie", validators=[DataRequired(message="Vous devez entrer une année de sortie")])
 	artist = StringField("Artiste", validators=[DataRequired(message="Vous devez entrer un nom d'artiste")])
 	img = StringField('Chemin vers Image')
-	genres = MultiCheckboxField(choices=[], coerce=int)
+	genres = MultiCheckboxField(choices=[], coerce=int, validators=[Optional()])
 	genre_add = StringField("Autre genre")
 	submit_btn = SubmitField("Valider")
 	next = HiddenField()
@@ -86,3 +95,7 @@ class AlbumForm(FlaskForm):
 
 			from application.app import mkpath
 			open(mkpath("static/img/" + self.img.data), 'w').write(image_data)
+
+
+
+

@@ -9,7 +9,7 @@
 
   <section class="col-lg-4 col-md-6 text-center heigth350">
 
-    <a href="{{ url_for('album_add')}}"><img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/ajout.jpeg') }}"></a>
+    <a href="{{ url_for('album_add')}}"><img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/ajout.png') }}"></a>
     <h3> <a href="{{ url_for('album_add')}}">Ajouter un album</a></h3>
 
   </section>
@@ -26,10 +26,10 @@
           {% if album.img_album in thumbnails %}
               <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/'+ album.img_album) }}" alt="{{ album.titre_album }}" >
           {% else %}
-              <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/pas_photo.jpg') }}" alt="Photo de {{ album.titre_album }} non répertoriée" >
+              <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/pas_photo.png') }}" alt="Photo de {{ album.titre_album }} non répertoriée" >
           {% endif %}
       {% else %}
-          <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/pas_photo.jpg') }}" alt="Photo de {{ album.titre_album }} non disponible" >
+          <img class="img-thumbnail" width="200" height="200" src="{{ url_for('static', filename='img/pas_photo.png') }}" alt="Photo de {{ album.titre_album }} non disponible" >
       {%endif%}
 
 
