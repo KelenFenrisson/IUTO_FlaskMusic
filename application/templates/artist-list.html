@@ -37,7 +37,7 @@
         <tbody>
             <tr class="active">
               <td></td>
-              <td>{{ album.titre_album }}</td>
+              <td><a href="{{ url_for('album_view', id=album.id_album) }}">{{ album.titre_album }}</a></td>
               <td>{% for genre in album.album_genre %}<a href="{{ url_for('album_list_by_genre', genre=genre.nom_genre) }}">{{ genre.nom_genre }} ,</a> {% endfor %}</td>
             </tr>
         </tbody>
