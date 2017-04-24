@@ -23,17 +23,11 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 
-            <li class="active">
               <li class="active"><a href="{{ url_for('album_list')}}">Albums</a></li>
-            </li>
 
-            <li class="active">
               <li class="active"><a href="{{ url_for('artist_list') }}">Artistes</a></li>
-            </li>
 
-            <li class="active">
               <li class="active"><a href="{{ url_for('genre_list') }}">Genres</a></li>
-            </li>
 
             <li>
               {% if current_user.is_authenticated %}

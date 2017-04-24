@@ -28,12 +28,13 @@
         <ol>
             {% for t in tracks %}
             <li>
-                <p class="smalltitle">Titre : {{ t['title'] }}</p>
-                <p>Durée : {{ t['duration'] }} s.</p>
+                <span class="smalltitle">Titre : {{ t['title'] }}</span>
+				<span>Durée : {{ t['duration'] }} s.</span>
                 <audio controls class="col-md-12">
-                    <source src="{{ t['preview'] }}" type="audio/mpeg">
-                    Extrait non supporté par votre navigateur.</source>
+                    <source src="{{ t['preview'] }}" type="audio/mpeg" />
+                    Extrait non supporté par votre navigateur.
                 </audio>
+
             </li>
             {% endfor %}
         </ol>
