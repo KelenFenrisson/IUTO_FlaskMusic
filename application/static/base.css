@@ -23,3 +23,8 @@
 .marTopBot{
   margin-top: 6px;
 }
+
+.smalltitle{
+  font-weight: bold;
+  font-size: 1.5em;
+}

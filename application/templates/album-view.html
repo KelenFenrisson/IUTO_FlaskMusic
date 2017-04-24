@@ -2,7 +2,8 @@
 
 {% block main %}
 
-<article class="">
+<article class="col-md-offset-2 col-md-8">
+<div class="col-md-offset-4 col-md-8">
   <header>
       <h2>{{pagetitle}}</h2>
   </header>
@@ -19,17 +20,19 @@
     <p>Interprété par {{ album.artiste.nom_artiste }}</p>
     <p>Sorti en {{ album.annee_album }}</p>
 
+</div>
 
+<div class="col-md-12">
     {% if tracks != None %}
-        <h5>Pistes</h5>
+        <h5 >Pistes</h5>
         <ol>
             {% for t in tracks %}
             <li>
-                <p>Titre : {{ t['title'] }}</p>
+                <p class="smalltitle">Titre : {{ t['title'] }}</p>
                 <p>Durée : {{ t['duration'] }} s.</p>
-                <audio controls>
+                <audio controls class="col-md-12">
                     <source src="{{ t['preview'] }}" type="audio/mpeg">
-                    Extrait non supporté par votre navigateur.
+                    Extrait non supporté par votre navigateur.</source>
                 </audio>
             </li>
             {% endfor %}
@@ -38,7 +41,7 @@
         <p>Cet album n'est pas référencé chez notre partenaire. <a href="http://www.deezer.com/fr/" target="_blank">Soyez le premier à leur faire découvrir !</a></p>
 
     {% endif %}
-
+</div>
 
 
 </article>
